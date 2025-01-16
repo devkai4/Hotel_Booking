@@ -5,6 +5,7 @@ df = pandas.read_csv("hotels.csv", dtype={"id":str})
 class Hotel:
     def __init__(self, hotel_id):
         self.hotel_id = hotel_id
+        self.name = df.loc[df["id"] == self.hotel_id, "name"].squeeze()
 
 
     def book(self):
@@ -24,10 +25,17 @@ class Hotel:
 
 class ReservationTicket:
     def __init__(self, customer_name, hotel_object):
-        pass
+        self.customer_name = customer_name
+        self.hotel = hotel_object
+
 
     def generate(self):
-        content = f"Name of the customer hotel"
+        content = f"""
+        Thank you for your reservation!
+        Here are you booking data:
+        Name: {self.customer_name}
+        Hotel name: {self.hotel.name}
+        """
         return content
 
 
@@ -38,7 +46,7 @@ hotel = Hotel(hotel_ID)
 if hotel.available():
     hotel.book()
     name = input("Enter your name: ")
-    reseration_ticket = ReservationTicket(name, hotel)
+    reseration_ticket = ReservationTicket(customer_name=name, hotel_object=hotel)
     reseration_ticket.generate()
     print(reseration_ticket.generate())
 else:
